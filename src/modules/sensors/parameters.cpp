@@ -74,6 +74,11 @@ void initialize_parameter_handles(ParameterHandles &parameter_handles)
 	parameter_handles.mag_comp_paramZ[2] = param_find("CAL_MAG2_ZCOMP");
 	parameter_handles.mag_comp_paramZ[3] = param_find("CAL_MAG3_ZCOMP");
 
+	parameter_handles.winglet_comp_paramW = param_find("CAL_WINGLET0_W");
+	parameter_handles.winglet_comp_paramX = param_find("CAL_WINGLET0_X");
+	parameter_handles.winglet_comp_paramY = param_find("CAL_WINGLET0_Y");
+	parameter_handles.winglet_comp_paramZ = param_find("CAL_WINGLET0_Z");
+
 	parameter_handles.air_cmodel = param_find("CAL_AIR_CMODEL");
 	parameter_handles.air_tube_length = param_find("CAL_AIR_TUBELEN");
 	parameter_handles.air_tube_diameter_mm = param_find("CAL_AIR_TUBED_MM");
@@ -88,10 +93,12 @@ void initialize_parameter_handles(ParameterHandles &parameter_handles)
 	(void)param_find("CAL_MAG1_ID");
 	(void)param_find("CAL_MAG2_ID");
 	(void)param_find("CAL_MAG3_ID");
+	(void)param_find("CAL_WINGLET0_ID");
 	(void)param_find("CAL_MAG0_ROT");
 	(void)param_find("CAL_MAG1_ROT");
 	(void)param_find("CAL_MAG2_ROT");
 	(void)param_find("CAL_MAG3_ROT");
+	(void)param_find("CAL_WINGLET0_ROT");
 	(void)param_find("CAL_MAG_SIDES");
 
 	(void)param_find("SYS_PARAM_VER");
@@ -134,6 +141,11 @@ void update_parameters(const ParameterHandles &parameter_handles, Parameters &pa
 	param_get(parameter_handles.mag_comp_paramZ[1], &(parameters.mag_comp_paramZ[1]));
 	param_get(parameter_handles.mag_comp_paramZ[2], &(parameters.mag_comp_paramZ[2]));
 	param_get(parameter_handles.mag_comp_paramZ[3], &(parameters.mag_comp_paramZ[3]));
+
+	param_get(parameter_handles.winglet_comp_paramW, &(parameters.winglet_comp_paramW));
+	param_get(parameter_handles.winglet_comp_paramX, &(parameters.winglet_comp_paramX));
+	param_get(parameter_handles.winglet_comp_paramY, &(parameters.winglet_comp_paramY));
+	param_get(parameter_handles.winglet_comp_paramZ, &(parameters.winglet_comp_paramZ));
 
 	param_get(parameter_handles.air_cmodel, &parameters.air_cmodel);
 	param_get(parameter_handles.air_tube_length, &parameters.air_tube_length);

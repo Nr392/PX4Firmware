@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- *   Copyright (c) 2016 PX4 Development Team. All rights reserved.
+ *   Copyright (c) 2012-2018 PX4 Development Team. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -31,81 +31,52 @@
  *
  ****************************************************************************/
 
-#pragma once
-
 /**
- * @file parameters.h
+ * ID of WINGLET the calibration is for.
  *
- * defines the list of parameters that are used within the sensors module
+ * @category system
+ * @group Sensor Calibration
+ */
+PARAM_DEFINE_INT32(CAL_WINGLET0_ID, 0);
+
+/**
+ * WINGLET 0 enabled
  *
- * @author Beat Kueng <beat-kueng@gmx.net>
+ * @boolean
+ * @category system
+ * @group Sensor Calibration
  */
-
-#include <lib/parameters/param.h>
-
-namespace sensors
-{
-
-struct Parameters {
-	float diff_pres_offset_pa;
-#ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
-	float diff_pres_analog_scale;
-#endif /* ADC_AIRSPEED_VOLTAGE_CHANNEL */
-
-	int32_t board_rotation;
-
-	float board_offset[3];
-
-	//parameters for current/throttle-based mag compensation
-	float mag_comp_paramX[4];
-	float mag_comp_paramY[4];
-	float mag_comp_paramZ[4];
-
-	float winglet_comp_paramW;
-	float winglet_comp_paramX;
-	float winglet_comp_paramY;
-	float winglet_comp_paramZ;
-
-	int32_t air_cmodel;
-	float air_tube_length;
-	float air_tube_diameter_mm;
-};
-
-struct ParameterHandles {
-	param_t diff_pres_offset_pa;
-#ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
-	param_t diff_pres_analog_scale;
-#endif /* ADC_AIRSPEED_VOLTAGE_CHANNEL */
-
-	param_t board_rotation;
-
-	param_t board_offset[3];
-
-	param_t mag_comp_paramX[4];
-	param_t mag_comp_paramY[4];
-	param_t mag_comp_paramZ[4];
-
-	param_t winglet_comp_paramW;
-	param_t winglet_comp_paramX;
-	param_t winglet_comp_paramY;
-	param_t winglet_comp_paramZ;
-
-	param_t air_cmodel;
-	param_t air_tube_length;
-	param_t air_tube_diameter_mm;
-
-};
+PARAM_DEFINE_INT32(CAL_WINGLET0_EN, 1);
 
 /**
- * initialize ParameterHandles struct
+ * WINGLET W-axis ANGLE
+ *
+ * @category system
+ * @group Sensor Calibration
  */
-void initialize_parameter_handles(ParameterHandles &parameter_handles);
-
+PARAM_DEFINE_FLOAT(CAL_WINGLET0_W, 0.0f);
 
 /**
- * Read out the parameters using the handles into the parameters struct.
- * @return 0 on success, <0 on error
+ * WINGLET X-axis ANGLE
+ *
+ * @category system
+ * @group Sensor Calibration
  */
-void update_parameters(const ParameterHandles &parameter_handles, Parameters &parameters);
+PARAM_DEFINE_FLOAT(CAL_WINGLET0_X, 0.0f);
 
-} /* namespace sensors */
+/**
+ * WINGLET Y-axis ANGLE
+ *
+ * @category system
+ * @group Sensor Calibration
+ */
+PARAM_DEFINE_FLOAT(CAL_WINGLET0_Y, 0.0f);
+
+/**
+ * WINGLET Z-axis ANGLE
+ *
+ * @category system
+ * @group Sensor Calibration
+ */
+PARAM_DEFINE_FLOAT(CAL_WINGLET0_Z, 0.0f);
+

@@ -129,6 +129,7 @@ px4_add_module(
 		sensors/baro.cpp
 		sensors/flow.cpp
 		sensors/battery.cpp
+		sensors/winglet.cpp
 
 	DEPENDS
 		px4_uavcan_dsdlc

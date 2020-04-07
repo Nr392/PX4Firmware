@@ -57,6 +57,7 @@
 #include <uavcan/protocol/param/GetSet.hpp>
 #include <uavcan/protocol/param/ExecuteOpcode.hpp>
 #include <uavcan/protocol/RestartNode.hpp>
+#include <uavcan/protocol/debug/LogMessage.hpp>
 #include <uavcan/equipment/ahrs/MagneticFieldStrength2.hpp>
 #include <uavcan/equipment/air_data/StaticPressure.hpp>
 #include <uavcan/equipment/air_data/StaticTemperature.hpp>
@@ -73,6 +74,7 @@
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/sensor_baro.h>
 #include <uORB/topics/sensor_mag.h>
+#include <uORB/topics/sensor_winglet.h>
 #include <uORB/topics/vehicle_gps_position.h>
 
 /**
@@ -168,6 +170,7 @@ private:
 	uavcan::Publisher<uavcan::equipment::ahrs::MagneticFieldStrength2> _ahrs_magnetic_field_strength2_publisher;
 	uavcan::Publisher<uavcan::equipment::gnss::Fix2> _gnss_fix2_publisher;
 	uavcan::Publisher<uavcan::equipment::power::BatteryInfo> _power_battery_info_publisher;
+	uavcan::Publisher<uavcan::protocol::debug::LogMessage> _winglet_publisher;
 	uavcan::Publisher<uavcan::equipment::air_data::StaticPressure> _air_data_static_pressure_publisher;
 	uavcan::Publisher<uavcan::equipment::air_data::StaticTemperature> _air_data_static_temperature_publisher;
 	hrt_abstime _last_static_temperature_publish{0};
@@ -179,6 +182,7 @@ private:
 	uORB::SubscriptionCallbackWorkItem _battery_status_sub{this, ORB_ID(battery_status)};
 	uORB::SubscriptionCallbackWorkItem _sensor_baro_sub{this, ORB_ID(sensor_baro)};
 	uORB::SubscriptionCallbackWorkItem _sensor_mag_sub{this, ORB_ID(sensor_mag)};
+	uORB::SubscriptionCallbackWorkItem _sensor_winglet_sub{this, ORB_ID(sensor_mag)};
 	uORB::SubscriptionCallbackWorkItem _vehicle_gps_position_sub{this, ORB_ID(vehicle_gps_position)};
 
 	perf_counter_t _cycle_perf;

@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- *   Copyright (c) 2016 PX4 Development Team. All rights reserved.
+ *   Copyright (c) 2018 PX4 Development Team. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -33,79 +33,47 @@
 
 #pragma once
 
-/**
- * @file parameters.h
- *
- * defines the list of parameters that are used within the sensors module
- *
- * @author Beat Kueng <beat-kueng@gmx.net>
- */
+#include <drivers/drv_winglet.h>
+#include <drivers/drv_hrt.h>
+#include <lib/cdev/CDev.hpp>
+#include <lib/conversion/rotation.h>
+#include <uORB/uORB.h>
+#include <uORB/PublicationMulti.hpp>
+#include <uORB/topics/sensor_winglet.h>
 
-#include <lib/parameters/param.h>
-
-namespace sensors
+class PX4Winglet : public cdev::CDev
 {
 
-struct Parameters {
-	float diff_pres_offset_pa;
-#ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
-	float diff_pres_analog_scale;
-#endif /* ADC_AIRSPEED_VOLTAGE_CHANNEL */
+public:
+	PX4Winglet(uint32_t device_id, uint8_t priority = ORB_PRIO_DEFAULT, enum Rotation rotation = ROTATION_NONE);
+	~PX4Winglet() override;
 
-	int32_t board_rotation;
+	int	ioctl(cdev::file_t *filp, int cmd, unsigned long arg) override;
 
-	float board_offset[3];
+	bool external() { return _sensor_winglet_pub.get().is_external; }
 
-	//parameters for current/throttle-based mag compensation
-	float mag_comp_paramX[4];
-	float mag_comp_paramY[4];
-	float mag_comp_paramZ[4];
+	void set_device_type(uint8_t devtype);
+	void set_error_count(uint64_t error_count) { _sensor_winglet_pub.get().error_count = error_count; }
+	void increase_error_count() { _sensor_winglet_pub.get().error_count++; }
+	void set_external(bool external) { _sensor_winglet_pub.get().is_external = external; }
+	void set_sensitivity(float w, float x, float y, float z) { _sensitivity = matrix::Quatf{w, x, y, z}; }
 
-	float winglet_comp_paramW;
-	float winglet_comp_paramX;
-	float winglet_comp_paramY;
-	float winglet_comp_paramZ;
+	void update(hrt_abstime timestamp_sample, uint8_t quatString[20]);
 
-	int32_t air_cmodel;
-	float air_tube_length;
-	float air_tube_diameter_mm;
-};
+	int get_class_instance() { return _class_device_instance; };
 
-struct ParameterHandles {
-	param_t diff_pres_offset_pa;
-#ifdef ADC_AIRSPEED_VOLTAGE_CHANNEL
-	param_t diff_pres_analog_scale;
-#endif /* ADC_AIRSPEED_VOLTAGE_CHANNEL */
+	void print_status();
 
-	param_t board_rotation;
+private:
 
-	param_t board_offset[3];
+	uORB::PublicationMultiData<sensor_winglet_s>	_sensor_winglet_pub;
 
-	param_t mag_comp_paramX[4];
-	param_t mag_comp_paramY[4];
-	param_t mag_comp_paramZ[4];
+	const enum Rotation	_rotation;
 
-	param_t winglet_comp_paramW;
-	param_t winglet_comp_paramX;
-	param_t winglet_comp_paramY;
-	param_t winglet_comp_paramZ;
+	matrix::Quatf	_calibration_scale{1.0f, 1.0f, 1.0f, 1.0f};
 
-	param_t air_cmodel;
-	param_t air_tube_length;
-	param_t air_tube_diameter_mm;
+	matrix::Quatf	_sensitivity{1.0f, 1.0f, 1.0f, 1.0f};
+
+	int			_class_device_instance{-1};
 
 };
-
-/**
- * initialize ParameterHandles struct
- */
-void initialize_parameter_handles(ParameterHandles &parameter_handles);
-
-
-/**
- * Read out the parameters using the handles into the parameters struct.
- * @return 0 on success, <0 on error
- */
-void update_parameters(const ParameterHandles &parameter_handles, Parameters &parameters);
-
-} /* namespace sensors */

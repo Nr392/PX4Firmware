@@ -77,6 +77,7 @@ UavcanNode::UavcanNode(uavcan::ICanDriver &can_driver, uavcan::ISystemClock &sys
 	_ahrs_magnetic_field_strength2_publisher(_node),
 	_gnss_fix2_publisher(_node),
 	_power_battery_info_publisher(_node),
+	_winglet_publisher(_node),
 	_air_data_static_pressure_publisher(_node),
 	_air_data_static_temperature_publisher(_node),
 	_cycle_perf(perf_alloc(PC_ELAPSED, MODULE_NAME": cycle time")),
@@ -299,6 +300,7 @@ void UavcanNode::Run()
 
 		_sensor_baro_sub.registerCallback();
 		_sensor_mag_sub.registerCallback();
+		_sensor_winglet_sub.registerCallback();
 		_vehicle_gps_position_sub.registerCallback();
 
 		_initialized = true;
@@ -381,6 +383,21 @@ void UavcanNode::Run()
 			magnetic_field.magnetic_field_ga[1] = mag.y;
 			magnetic_field.magnetic_field_ga[2] = mag.z;
 			_ahrs_magnetic_field_strength2_publisher.broadcast(magnetic_field);
+		}
+	}
+
+	if (_sensor_winglet_sub.updated()) {
+		sensor_winglet_s winglet;
+
+		if (_sensor_winglet_sub.copy(&winglet)) {
+			uavcan::protocol::debug::LogMessage winglet{};
+			winglet.sensor_id = winglet.device_id;
+			String text = "";
+   			text += String(winglet.w); text += ",";
+    			text += String(winglet.x); text += ",";
+    			text += String(winglet.y); text += ",";
+    			text += String(winglet.z); text += "\n";
+			_winglet_publisher.broadcast(winglet);
 		}
 	}
 
