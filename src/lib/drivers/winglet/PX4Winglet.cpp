@@ -128,7 +128,7 @@ void PX4Winglet::update(hrt_abstime timestamp_sample, uint8_t quatString[])
 	rotate_4f(_rotation, w, x, y, z);
 
 	// Apply range scale and the calibrating offset/scale
-	const matrix::Quatf val_calibrated{(raw_f.emult(_sensitivity) * report.scaling)};
+	const matrix::Quatf val_calibrated{(quat.emult(_sensitivity) * report.scaling)};
 
 	report.w = val_calibrated(0);
 	report.x = val_calibrated(1);
