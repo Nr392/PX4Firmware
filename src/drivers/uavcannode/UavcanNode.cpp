@@ -392,7 +392,7 @@ void UavcanNode::Run()
 		if (_sensor_winglet_sub.copy(&winglet)) {
 			uavcan::protocol::debug::KeyValue winglet{};
 			winglet.sensor_id = winglet.device_id;
-			winglet.key = wing.sensor_id;
+			winglet.key = wing.key;
 			switch(key) {
 				case '0' :
 					winglet.value = wing.w;

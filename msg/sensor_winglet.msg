@@ -3,6 +3,8 @@ uint32 device_id	# unique device ID for the sensor that does not change between 
 
 uint64 error_count
 
+uint8 key		# WINGLET key
+
 float32 w		# WINGLET W axis
 float32 x		# WINGLET X axis
 float32 y		# WINGLET Y axis

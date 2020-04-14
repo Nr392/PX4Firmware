@@ -117,7 +117,7 @@ void PX4Winglet::update(hrt_abstime timestamp_sample, uint key[], float value)
 	report.x = val_calibrated(1);
 	report.y = val_calibrated(2);
 	report.z = val_calibrated(3);
-	
+	report.key = key[0];
 
 	_sensor_winglet_pub.update();
 }
