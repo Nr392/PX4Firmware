@@ -101,7 +101,7 @@ void PX4Winglet::set_device_type(uint8_t devtype)
 	_sensor_winglet_pub.get().device_id = device_id.devid;
 }
 
-void PX4Winglet::update(hrt_abstime timestamp_sample, uint8_t quatString[20])
+void PX4Winglet::update(hrt_abstime timestamp_sample, uint8_t quatString[])
 {
 	sensor_winglet_s &report = _sensor_winglet_pub.get();
 	report.timestamp = timestamp_sample;
@@ -110,15 +110,19 @@ void PX4Winglet::update(hrt_abstime timestamp_sample, uint8_t quatString[20])
 
 	for(int i = 0; i < 3; i++){
 		int j = 0;
+		std::string convert = "";
 		while(quatString[j] != ","){
-			quat(i) = quat(i) * 10 + quatString[j];	
+			convert += std::to_string(quatString[j]); 
+			
 		}
+		quat(i) = stof(convert);
 	}
 	int j = 0;
 	while(quatString[j] != "\n"){
-		quat(i) = quat(i) * 10 + quatString[j];	
+		convert += std::to_string(quatString[j]); 
+		
 	}
-
+	quat(i) = stof(convert);
 
 	// Apply rotation (before scaling)
 	rotate_4f(_rotation, w, x, y, z);
