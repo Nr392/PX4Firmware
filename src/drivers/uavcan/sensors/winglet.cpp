@@ -67,7 +67,7 @@ UavcanWingletBridge::winglet_sub_cb(const uavcan::ReceivedDataStructure<uavcan::
 		return;
 	}	
 
-	int length = sizeof(msg)/sizeof(uint8_t);
+	int length = sizeof(msg.text)/sizeof(uint8_t);
 
 	uint8_t * quatString = new uint8_t[length];
 	for(int i = 0; i < length; i++){
