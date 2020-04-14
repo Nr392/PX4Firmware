@@ -52,7 +52,7 @@ UavcanWingletBridge::ioctl(struct file *filp, int cmd, unsigned long arg)
 }
 
 void
-UavcanWingletBridge::winglet_sub_cb(const uavcan::ReceivedDataStructure<uavcan::protocol::debug::LogMessage>
+UavcanWingletBridge::winglet_sub_cb(const uavcan::ReceivedDataStructure<uavcan::protocol::debug::KeyValue>
 				     &msg)
 {
 	uavcan_bridge::Channel *channel = get_channel_for_node(msg.getSrcNodeID().get());
@@ -67,15 +67,13 @@ UavcanWingletBridge::winglet_sub_cb(const uavcan::ReceivedDataStructure<uavcan::
 		return;
 	}	
 
-	int length = sizeof(msg.text)/sizeof(uint8_t);
+	uint * key = new uint[1];
+	
+	key[0] = msg.key[0];
 
-	uint8_t * quatString = new uint8_t[length];
-	for(int i = 0; i < length; i++){
-		quatString[i] = msg.text[i];
-	}
+	float value = msg.value;
 
-
-	winglet->update(hrt_absolute_time(), quatString);
+	winglet->update(hrt_absolute_time(), key, value);
 }
 
 int UavcanWingletBridge::init_driver(uavcan_bridge::Channel *channel)

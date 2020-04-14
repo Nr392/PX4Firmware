@@ -58,6 +58,7 @@
 #include <uavcan/protocol/param/ExecuteOpcode.hpp>
 #include <uavcan/protocol/RestartNode.hpp>
 #include <uavcan/protocol/debug/LogMessage.hpp>
+#include <uavcan/protocol/debug/KeyValue.hpp>
 #include <uavcan/equipment/ahrs/MagneticFieldStrength2.hpp>
 #include <uavcan/equipment/air_data/StaticPressure.hpp>
 #include <uavcan/equipment/air_data/StaticTemperature.hpp>
@@ -170,7 +171,7 @@ private:
 	uavcan::Publisher<uavcan::equipment::ahrs::MagneticFieldStrength2> _ahrs_magnetic_field_strength2_publisher;
 	uavcan::Publisher<uavcan::equipment::gnss::Fix2> _gnss_fix2_publisher;
 	uavcan::Publisher<uavcan::equipment::power::BatteryInfo> _power_battery_info_publisher;
-	uavcan::Publisher<uavcan::protocol::debug::LogMessage> _winglet_publisher;
+	uavcan::Publisher<uavcan::protocol::debug::KeyValue> _winglet_publisher;
 	uavcan::Publisher<uavcan::equipment::air_data::StaticPressure> _air_data_static_pressure_publisher;
 	uavcan::Publisher<uavcan::equipment::air_data::StaticTemperature> _air_data_static_temperature_publisher;
 	hrt_abstime _last_static_temperature_publish{0};

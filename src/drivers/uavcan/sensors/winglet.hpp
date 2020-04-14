@@ -5,7 +5,7 @@
 
 #include <drivers/drv_winglet.h>
 
-#include <uavcan/protocol/debug/LogMessage.hpp>
+#include <uavcan/protocol/debug/KeyValue.hpp>
 
 class UavcanWingletBridge : public UavcanCDevSensorBridgeBase
 {
@@ -24,14 +24,14 @@ private:
 
 	int init_driver(uavcan_bridge::Channel *channel) override;
 
-	void winglet_sub_cb(const uavcan::ReceivedDataStructure<uavcan::protocol::debug::LogMessage> &msg);
+	void winglet_sub_cb(const uavcan::ReceivedDataStructure<uavcan::protocol::debug::KeyValue> &msg);
 
 	typedef uavcan::MethodBinder < UavcanWingletBridge *,
 		void (UavcanWingletBridge::*)
-		(const uavcan::ReceivedDataStructure<uavcan::protocol::debug::LogMessage> &) >
+		(const uavcan::ReceivedDataStructure<uavcan::protocol::debug::KeyValue> &) >
 		WingletCbBinder;
 
-	uavcan::Subscriber<uavcan::protocol::debug::LogMessage, WingletCbBinder> _sub_winglet;
+	uavcan::Subscriber<uavcan::protocol::debug::KeyValue, WingletCbBinder> _sub_winglet;
 
 
 	winglet_calibration_s _scale{};

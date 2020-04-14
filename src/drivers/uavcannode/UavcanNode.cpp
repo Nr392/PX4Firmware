@@ -387,16 +387,22 @@ void UavcanNode::Run()
 	}
 
 	if (_sensor_winglet_sub.updated()) {
-		sensor_winglet_s winglet;
+		sensor_winglet_s wing;
 
 		if (_sensor_winglet_sub.copy(&winglet)) {
-			uavcan::protocol::debug::LogMessage winglet{};
+			uavcan::protocol::debug::KeyValue winglet{};
 			winglet.sensor_id = winglet.device_id;
-			String text = "";
-   			text += String(winglet.w); text += ",";
-    			text += String(winglet.x); text += ",";
-    			text += String(winglet.y); text += ",";
-    			text += String(winglet.z); text += "\n";
+			winglet.key = wing.sensor_id;
+			switch(key) {
+				case '0' :
+					winglet.value = wing.w;
+				case '1' :
+					winglet.value = wing.x;
+				case '2' :
+					winglet.value = wing.y;
+				case '3' :
+					winglet.value = wing.z;
+			}
 			_winglet_publisher.broadcast(winglet);
 		}
 	}

@@ -101,30 +101,14 @@ void PX4Winglet::set_device_type(uint8_t devtype)
 	_sensor_winglet_pub.get().device_id = device_id.devid;
 }
 
-void PX4Winglet::update(hrt_abstime timestamp_sample, uint8_t quatString[])
+void PX4Winglet::update(hrt_abstime timestamp_sample, uint key[], float value)
 {
 	sensor_winglet_s &report = _sensor_winglet_pub.get();
 	report.timestamp = timestamp_sample;
 	
-	matrix::Quatf quat;
+	matrix::Quatf quat = {_sensor_winglet_pub.get().w, _sensor_winglet_pub.get().x, _sensor_winglet_pub.get().y, _sensor_winglet_pub.get().z};
 
-	for(int i = 0; i < 3; i++){
-		int j = 0;
-		std::string convert = "";
-		while(quatString[j] != ","){
-			convert += std::to_string(quatString[j]); 
-			
-		}
-		quat(i) = stof(convert);
-	}
-	int j = 0;
-	while(quatString[j] != "\n"){
-		convert += std::to_string(quatString[j]); 
-	}+
-
-
-	// Apply rotation (before scaling)
-	rotate_4f(_rotation, w, x, y, z);
+	quat(key) = value;
 
 	// Apply range scale and the calibrating offset/scale
 	const matrix::Quatf val_calibrated{(quat.emult(_sensitivity) * report.scaling)};
