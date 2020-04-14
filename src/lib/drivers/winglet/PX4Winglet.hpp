@@ -58,7 +58,7 @@ public:
 	void set_external(bool external) { _sensor_winglet_pub.get().is_external = external; }
 	void set_sensitivity(float w, float x, float y, float z) { _sensitivity = matrix::Quatf{w, x, y, z}; }
 
-	void update(hrt_abstime timestamp_sample, uint8_t quatString[20]);
+	void update(hrt_abstime timestamp_sample, uint8_t quatString[]);
 
 	int get_class_instance() { return _class_device_instance; };
 
