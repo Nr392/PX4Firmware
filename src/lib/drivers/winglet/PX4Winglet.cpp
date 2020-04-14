@@ -106,7 +106,7 @@ void PX4Winglet::update(hrt_abstime timestamp_sample, uint8_t quatString[])
 	sensor_winglet_s &report = _sensor_winglet_pub.get();
 	report.timestamp = timestamp_sample;
 	
-	const matrix::Quatf quat{w, x, y, z};
+	matrix::Quatf quat;
 
 	for(int i = 0; i < 3; i++){
 		int j = 0;
@@ -120,9 +120,8 @@ void PX4Winglet::update(hrt_abstime timestamp_sample, uint8_t quatString[])
 	int j = 0;
 	while(quatString[j] != "\n"){
 		convert += std::to_string(quatString[j]); 
-		
-	}
-	quat(i) = stof(convert);
+	}+
+
 
 	// Apply rotation (before scaling)
 	rotate_4f(_rotation, w, x, y, z);
